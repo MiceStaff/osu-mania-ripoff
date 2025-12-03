@@ -13,7 +13,7 @@ public class NoteController : MonoBehaviour
     [HideInInspector]
     public bool isReleased = false;
     float tailLength;
-    void Start()
+    void Awake()
     {
         if (data.type == NoteType.Hold)
         {

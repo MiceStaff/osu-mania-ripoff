@@ -1,9 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
-[System.Serializable]
-public class GameManager : MonoBehaviour 
+
+public class GameManager : MonoBehaviour
 {
-    public void Start()
+    public NoteSpawner spawner;
+    public string osuFilePath;
+    public AudioSource musicSource;
+    OsuParser osuParser = new OsuParser();
+    void Start()
     {
-        
+        spawner.loadChart(osuParser.ParseOsuFile(osuFilePath));
+        musicSource.PlayDelayed(spawner.noteTravelTime / 1000f);
     }
 }

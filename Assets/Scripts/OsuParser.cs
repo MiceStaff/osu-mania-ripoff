@@ -12,11 +12,10 @@ public enum NoteType
 public class NoteData
 {
     public int lane;
-    public float hitTime;
-    public float releaseTime;
+    public int hitTime;
+    public int releaseTime;
     public NoteType type;
 }
-[System.Serializable]
 public class OsuParser
 {
     [HideInInspector]
@@ -51,19 +50,13 @@ public class OsuParser
 
         NoteData note = new NoteData
         {
-            lane = (int)Mathf.Floor(xPos / 128f),
-            hitTime = int.Parse(values[2])
+            lane = xPos / 128,
+            hitTime = time
         };
-
         if ((type & 128) > 0)
         {
             note.type = NoteType.Hold;
-            note.releaseTime = int.Parse(values[5]);
-        }
-        else if ((type & 64) > 0)
-        {
-            note.type = NoteType.Mine;
-            note.releaseTime = note.hitTime;
+            note.releaseTime = int.Parse(values[5].Split(':')[0]);
         }
         else
         {
