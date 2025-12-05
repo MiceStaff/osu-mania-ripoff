@@ -560,7 +560,7 @@ MonoBehaviour:
   laneX:
   - -2.52
   - -0.84
-  - -0.84
+  - 0.84
   - 2.52
   spawnY: 5.84
   hitY: -3.5
@@ -569,6 +569,7 @@ MonoBehaviour:
   minePrefab: {fileID: 4116578005691283356, guid: 1cd713eb0f4cb634f84886b2bcc55fc3, type: 3}
   musicSource: {fileID: 2030522939}
   noteTravelTime: 415
+  songTime: -2000
 --- !u!114 &2030522938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,6 +584,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   spawner: {fileID: 2030522937}
   osuFilePath: Assets/Beatmaps/Kurokotei - Galaxy Collapse (Mat) [Cataclysmic Hypernova].osu
+  musicSource: {fileID: 2030522939}
 --- !u!82 &2030522939
 AudioSource:
   m_ObjectHideFlags: 0
@@ -595,7 +597,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 688657329029cfa41add14410908e628, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

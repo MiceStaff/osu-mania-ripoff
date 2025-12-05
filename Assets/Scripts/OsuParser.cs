@@ -18,6 +18,7 @@ public class NoteData
 }
 public class OsuParser
 {
+    public static OsuParser Instance = new OsuParser();
     [HideInInspector]
     public List<NoteData> ParseOsuFile(string osuFilePath)
     {
@@ -53,9 +54,10 @@ public class OsuParser
             lane = xPos / 128,
             hitTime = time
         };
+        /*
         if ((type & 128) > 0)
         {
-            note.type = NoteType.Hold;
+            note.type = NoteType.Tap; note.type = NoteType.Hold;
             note.releaseTime = int.Parse(values[5].Split(':')[0]);
         }
         else
@@ -63,7 +65,11 @@ public class OsuParser
             note.type = NoteType.Tap;
             note.releaseTime = note.hitTime;
         }
-
+        */
+        
+        note.type = NoteType.Tap;
+        note.releaseTime = note.hitTime;
+        
         return note;
     }
 }

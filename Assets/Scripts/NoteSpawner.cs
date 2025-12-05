@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class NoteSpawner : MonoBehaviour
 {
+    public static NoteSpawner Instance;
     public float[] laneX = new float[4];
     public float spawnY;
     public float hitY;
@@ -12,14 +14,17 @@ public class NoteSpawner : MonoBehaviour
     public AudioSource musicSource;
     public float noteTravelTime = 415f;
     List<NoteData> notes = new List<NoteData>();
+    public static readonly List<Queue<NoteController>> laneNotes
+    = new List<Queue<NoteController>>() { new(), new(), new(), new() };
     int nextNoteIndex = 0;
-
+    private void Awake()
+    {
+        Instance = this;                
+    }
     void Update()
     {
-        if (musicSource == null || notes == null) return;
-        float songTime = musicSource.time * 1000f;
-        // spawn any notes whose (hitTime - noteTravelTime) <= songTime
-        while (nextNoteIndex < notes.Count && notes[nextNoteIndex].hitTime <= songTime)
+        if (notes == null) return;
+        while (nextNoteIndex < notes.Count && (notes[nextNoteIndex].hitTime - noteTravelTime) <= GameManager.instance.songTime)
         {
             Spawn(notes[nextNoteIndex]);
             nextNoteIndex++;
@@ -33,15 +38,21 @@ public class NoteSpawner : MonoBehaviour
     void Spawn(NoteData n)
     {
         Vector3 spawnPos = new Vector3(laneX[n.lane], spawnY, 0);
-        GameObject prefab = tapPrefab;
-        if (n.type == NoteType.Hold) prefab = holdPrefab;
-        if (n.type == NoteType.Mine) prefab = minePrefab;
+        GameObject prefab =
+            (n.type == NoteType.Hold) ? holdPrefab :
+            (n.type == NoteType.Mine) ? minePrefab :
+            tapPrefab;
 
-        var go = Instantiate(prefab, spawnPos, Quaternion.identity, transform);
+        var go = Instantiate(prefab, spawnPos, Quaternion.identity);
         var nc = go.GetComponent<NoteController>();
-        nc.data.hitTime = n.hitTime;
-        nc.data.releaseTime = n.releaseTime;
+        
+        nc.data = n;
         nc.speed = (spawnPos.y - hitY) / noteTravelTime;
-        nc.data.lane = n.lane;
+        if(nc.data.type == NoteType.Hold)
+        {
+            nc.setupHold();
+        }
+
+        laneNotes[n.lane].Enqueue(nc);
     }
 }

@@ -1,6 +1,12 @@
 using UnityEngine;
 
 [System.Serializable]
+public enum TimingWindow { 
+    Perfect = 50,
+    Good = 100,
+    Bad = 150,
+    Miss = 200
+}
 public class NoteController : MonoBehaviour
 {
     public NoteData data;
@@ -13,21 +19,31 @@ public class NoteController : MonoBehaviour
     [HideInInspector]
     public bool isReleased = false;
     float tailLength;
-    void Awake()
+    void Start()
     {
-        if (data.type == NoteType.Hold)
-        {
-            tailLength = speed * (data.releaseTime - data.hitTime);
-            tail.localScale = new Vector3(1f, tailLength, 1f);
-            cap.Translate(new Vector3(0, radius * 2 * tailLength, 0));
-        }
-
+       
     }
     void Update()
     {
-        if (isHit && data.type != NoteType.Hold) return;
-        // move downward at speed
-        float dy = (float)(speed * Time.deltaTime * 1000);
-        transform.position += new Vector3(0f, -dy, 0f);
+        float dt = Time.deltaTime * 1000f;
+        if (isHit)
+            transform.position = new Vector3(NoteSpawner.Instance.laneX[data.lane],NoteSpawner.Instance.hitY,0);
+        else
+            transform.position += Vector3.down * speed * dt;
+        if (!isHit && GameManager.instance.songTime > data.hitTime + (int)TimingWindow.Miss)
+        {
+            NoteSpawner.laneNotes[data.lane].Dequeue();
+            Destroy(gameObject);
+        }
+    }
+    public void setupHold()
+    {
+        tailLength = speed * (data.releaseTime - data.hitTime);
+        tail.localScale = new Vector3(1f, tailLength, 1f);
+        cap.Translate(new Vector3(0, radius * 2 * tailLength, 0));
+    }
+    public void onHold()
+    {
+        isHit = true;
     }
 }
