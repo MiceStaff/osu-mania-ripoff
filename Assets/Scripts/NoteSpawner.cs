@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class NoteSpawner : MonoBehaviour
 {
@@ -13,10 +12,12 @@ public class NoteSpawner : MonoBehaviour
     public GameObject minePrefab;
     public AudioSource musicSource;
     public float noteTravelTime = 415f;
+    [HideInInspector]
+    public int totalNotes;
     List<NoteData> notes = new List<NoteData>();
     public static readonly List<Queue<NoteController>> laneNotes
     = new List<Queue<NoteController>>() { new(), new(), new(), new() };
-    int nextNoteIndex = 0;
+    public int nextNoteIndex = 0;
     private void Awake()
     {
         Instance = this;                
@@ -24,7 +25,7 @@ public class NoteSpawner : MonoBehaviour
     void Update()
     {
         if (notes == null) return;
-        while (nextNoteIndex < notes.Count && (notes[nextNoteIndex].hitTime - noteTravelTime) <= GameManager.instance.songTime)
+        while (nextNoteIndex < totalNotes && (notes[nextNoteIndex].hitTime - noteTravelTime) <= GameManager.instance.songTime)
         {
             Spawn(notes[nextNoteIndex]);
             nextNoteIndex++;
@@ -34,6 +35,7 @@ public class NoteSpawner : MonoBehaviour
     {
         nextNoteIndex = 0;
         notes = leNotes;
+        totalNotes = notes.Count;
     }
     void Spawn(NoteData n)
     {

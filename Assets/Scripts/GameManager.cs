@@ -12,10 +12,13 @@ public class GameManager : MonoBehaviour
 
     bool songStarted = false;
     float startTime;
+    private void Awake()
+    {
+        instance = this; 
+    }
     void Start()
     {
         songTime = float.MinValue;
-        instance = this;
         spawner.loadChart(OsuParser.Instance.ParseOsuFile(osuFilePath));
         startTime = Time.time * 1000;
     }

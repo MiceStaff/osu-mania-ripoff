@@ -1,12 +1,6 @@
 using UnityEngine;
 
 [System.Serializable]
-public enum TimingWindow { 
-    Perfect = 50,
-    Good = 100,
-    Bad = 150,
-    Miss = 200
-}
 public class NoteController : MonoBehaviour
 {
     public NoteData data;
@@ -30,8 +24,9 @@ public class NoteController : MonoBehaviour
             transform.position = new Vector3(NoteSpawner.Instance.laneX[data.lane],NoteSpawner.Instance.hitY,0);
         else
             transform.position += Vector3.down * speed * dt;
-        if (!isHit && GameManager.instance.songTime > data.hitTime + (int)TimingWindow.Miss)
+        if (!isHit && GameManager.instance.songTime > data.hitTime + InputManager.instance.fail)
         {
+            Judge.instance.Miss();
             NoteSpawner.laneNotes[data.lane].Dequeue();
             Destroy(gameObject);
         }

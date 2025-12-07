@@ -5,11 +5,15 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager instance;
     public ButtonController[] buttons = new ButtonController[4];
+    public float flawless = 20f;
     public float perfect = 50f;
     public float great = 100f;
     public float good = 150f;
-    public float miss = 200f;
-
+    public float fail = 200f;
+    private void Awake()
+    {
+        instance = this;
+    }
     void Update()
     {
         for (int i = 0 ; i < 4; i++)
@@ -77,10 +81,11 @@ public class InputManager : MonoBehaviour
     {
         float abs = Mathf.Abs(diff);
 
-        if (abs <= perfect) Debug.Log("Perfect!");
-        else if (abs <= great) Debug.Log("Great!");
-        else if (abs <= good) Debug.Log("Good!");
-        else if (abs <= miss) Debug.Log("Bad!");
+        if (abs <= flawless) Judge.instance.Flawless();
+        else if (abs <= perfect) Judge.instance.Perfect();
+        else if (abs <= great) Judge.instance.Great();
+        else if (abs <= good) Judge.instance.Good();
+        else if (abs <= fail) Judge.instance.Bad();
         else return;
 
         NoteSpawner.laneNotes[note.data.lane].Dequeue();
@@ -90,27 +95,18 @@ public class InputManager : MonoBehaviour
     void ProcessHoldStart(NoteController note, float diff)
     {
         float abs = Mathf.Abs(diff);
-
-        if (abs <= miss)
-        {
-            note.onHold();
-            Debug.Log("Hold started");
-        }
-        else
-        {
-            NoteSpawner.laneNotes[note.data.lane].Dequeue();
-            Destroy(note.gameObject);
-        }
+        note.onHold();
+        Debug.Log("Hold started");
     }
 
     void ProcessHoldRelease(NoteController note, float diff)
     {
         float abs = Mathf.Abs(diff);
-
-        if (abs <= perfect) Debug.Log("Hold Perfect!");
-        else if (abs <= great) Debug.Log("Hold Great!");
-        else if (abs <= good) Debug.Log("Hold Good!");
-        else Debug.Log("Hold Miss!");
+        if (abs <= flawless) Judge.instance.Flawless();
+        else if (abs <= perfect) Judge.instance.Perfect();
+        else if (abs <= great) Judge.instance.Great();
+        else if (abs <= good) Judge.instance.Good();
+        else Judge.instance.Bad();
 
         NoteSpawner.laneNotes[note.data.lane].Dequeue();
         Destroy(note.gameObject);
