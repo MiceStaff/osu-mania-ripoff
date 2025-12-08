@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Video;
 
 public class GameManager : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class GameManager : MonoBehaviour
     public float songTime;
     public float startDelay = 2f;
     public AudioSource musicSource;
+    public VideoPlayer videoPlayer;
     public NoteSpawner spawner;
     public string osuFilePath;
 
@@ -29,6 +31,7 @@ public class GameManager : MonoBehaviour
         if (!songStarted && elapsed >= startDelay)
         {
             musicSource.Play();
+            videoPlayer.Play();
             songStarted = true;
         }
         if (songStarted)

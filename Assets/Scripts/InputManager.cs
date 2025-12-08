@@ -87,7 +87,7 @@ public class InputManager : MonoBehaviour
         else if (abs <= good) Judge.instance.Good();
         else if (abs <= fail) Judge.instance.Bad();
         else return;
-
+        UIManager.instance.SetDelta(diff);
         NoteSpawner.laneNotes[note.data.lane].Dequeue();
         Destroy(note.gameObject);
     }

@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI accuracyText;
     public TextMeshProUGUI comboText;
     public TextMeshProUGUI songInfoText;
+    public TextMeshProUGUI deltaText;
 
     void Awake()
     {
@@ -26,13 +27,19 @@ public class UIManager : MonoBehaviour
         accuracyText.text = accuracy.ToString("F2") + "%";
     }
 
-    public void SetCombo(int combo)
+    public void SetCombo(int combo , Color color)
     {
         comboText.text = combo > 5 ? combo.ToString("N0") : "";
+        comboText.color = color;
     }
 
     public void SetSongInfo(string title, string artist)
     {
-        songInfoText.text = $"{title} — {artist}";
+        songInfoText.text = $"{title} {artist}";
+    }
+
+    public void SetDelta(float delta)
+    {
+        deltaText.text = delta.ToString("F2") + "ms";
     }
 }

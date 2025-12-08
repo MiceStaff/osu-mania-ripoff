@@ -21,6 +21,7 @@ public class Judge : MonoBehaviour
         typeCount[0]++;
         mainScore += 900000 / NoteSpawner.Instance.totalNotes;
         comboAdd();
+        UIManager.instance.SetCombo(combo , new Color(0.58f , 0.97f , 1f));
         accUpdate();
         scoreUpdate();
     }
@@ -29,6 +30,7 @@ public class Judge : MonoBehaviour
         typeCount[1]++;
         mainScore += 890000 / NoteSpawner.Instance.totalNotes;
         comboAdd();
+        UIManager.instance.SetCombo(combo, new Color(1f, 1f, 0.58f));
         accUpdate();
         scoreUpdate();
     }
@@ -37,6 +39,7 @@ public class Judge : MonoBehaviour
         typeCount[2]++;
         mainScore += 600000 / NoteSpawner.Instance.totalNotes;
         comboAdd();
+        UIManager.instance.SetCombo(combo, new Color(0.7f, 1f, 0.58f));
         accUpdate();
         scoreUpdate();
     }
@@ -44,12 +47,14 @@ public class Judge : MonoBehaviour
     public void Good() {
         typeCount[3]++;
         mainScore += 300000 / NoteSpawner.Instance.totalNotes;
+        UIManager.instance.SetCombo(combo, new Color(0.58f, 1f, 0.67f));
         accUpdate();
         scoreUpdate();
     }
     public void Bad() {
         typeCount[4]++;
         mainScore += 150000 / NoteSpawner.Instance.totalNotes;
+        UIManager.instance.SetCombo(combo, new Color(0.42f, 1f, 0.5f));
         comboBreak();
         accUpdate();
         scoreUpdate();
@@ -57,6 +62,7 @@ public class Judge : MonoBehaviour
     public void Miss()
     {
         typeCount[5]++;
+        UIManager.instance.SetCombo(combo, new Color(0.5f, 0.5f, 0.5f));
         comboBreak();
         accUpdate();
     }
@@ -64,13 +70,12 @@ public class Judge : MonoBehaviour
     void comboBreak()
     {
         combo = 0;
-        UIManager.instance.SetCombo(combo);
+        
     }
     void comboAdd()
     {
         comboBonus += (1 + 2 * combo) * 100000 / (NoteSpawner.Instance.totalNotes * NoteSpawner.Instance.totalNotes);
         combo++;
-        UIManager.instance.SetCombo(combo);
     }
     void accUpdate() {
         hitCount++;
