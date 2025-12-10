@@ -41,6 +41,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 2349203589
+    locked: 0
   - name: Button
     uniqueID: 2077740165
     locked: 0
@@ -49,6 +52,9 @@ TagManager:
     locked: 0
   - name: Note
     uniqueID: 4241252893
+    locked: 0
+  - name: UI
+    uniqueID: 2100723213
     locked: 0
   m_RenderingLayers:
   - Default

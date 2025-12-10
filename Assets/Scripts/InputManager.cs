@@ -5,10 +5,10 @@ public class InputManager : MonoBehaviour
 {
     public static InputManager instance;
     public ButtonController[] buttons = new ButtonController[4];
-    public float flawless = 20f;
-    public float perfect = 50f;
-    public float great = 100f;
-    public float good = 150f;
+    public float flawless = 40f;
+    public float perfect = 80f;
+    public float great = 120f;
+    public float good = 160f;
     public float fail = 200f;
     private void Awake()
     {

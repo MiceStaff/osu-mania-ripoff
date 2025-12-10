@@ -28,7 +28,7 @@ public class NoteController : MonoBehaviour
         if (!isHit && GameManager.instance.songTime > data.hitTime + InputManager.instance.fail)
         {
             Judge.instance.Miss();
-            UIManager.instance.SetDelta(-200);
+            UIManager.instance.SetDelta(200);
             NoteSpawner.laneNotes[data.lane].Dequeue();
             Destroy(gameObject);
         }
